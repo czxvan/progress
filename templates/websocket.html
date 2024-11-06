@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Progress Bar Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <style>
+        #progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        #progress {
+            width: 0;
+            height: 30px;
+            background-color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+
+<h1>WebSocket Progress Bar Example</h1>
+<button id="start-task">Start Task</button>
+<button id="cancel-task" disabled>Cancel Task</button>
+<div id="progress-bar">
+    <div id="progress"></div>
+</div>
+<p id="status">Progress: 0%</p>
+
+<script>
+    const socket = io.connect('http://127.0.0.1:5000'); // 连接到服务器
+    let taskId = null; // 当前任务 ID
+
+    document.getElementById('start-task').onclick = function() {
+        // [NOTICE]: 这里没有限制同一时段多次启动任务,但进度条会被覆盖，应用场景中可能需要使用task_list来管理多个任务
+        socket.emit('start_task', {}); // 向服务器发送启动任务的请求
+    };
+
+    document.getElementById('cancel-task').onclick = function() {
+        if (taskId) {
+            socket.emit('cancel_task', { task_id: taskId }); // 向服务器发送取消任务的请求
+        }
+    };
+
+    // 监听任务启动事件
+    socket.on('task_started', function(data) {
+        taskId = data.task_id; // 保存任务 ID
+        document.getElementById('cancel-task').disabled = false; // 启用取消按钮
+        document.getElementById('status').innerText = 'Task Started';
+        document.getElementById('progress').style.width = '0%'; // 重置进度条
+    });
+
+    // 监听进度更新事件
+    socket.on('progress_update', function(data) {
+        const progress = data.progress;
+        document.getElementById('progress').style.width = progress + '%';
+        document.getElementById('status').innerText = `Progress: ${progress}%`;
+    });
+
+    // 监听任务取消事件
+    socket.on('task_cancelled', function(data) {
+        document.getElementById('status').innerText = 'Task Cancelled';
+        document.getElementById('progress').style.width = '0%'; // 重置进度条
+        taskId = null; // 清除任务 ID
+        document.getElementById('cancel-task').disabled = true; // 禁用取消按钮
+    });
+</script>
+
+</body>
+</html>
