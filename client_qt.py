@@ -37,9 +37,9 @@ class Worker(QThread):
         def handle_cancelled(data):
             self.task_cancelled.emit()
 
-        # # Keep the thread alive and listen for events
-        # while True:
-        #     sio.sleep(1)  # Prevent busy wait
+        # Keep the thread alive and listen for events, which is necessary in Linux
+        while True:
+            sio.sleep(1)  # Prevent busy wait
 
 class ProgressApp(QWidget):
     def __init__(self):

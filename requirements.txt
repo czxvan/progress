@@ -1,0 +1,5 @@
+Flask
+flask_socketio
+PyQt5
+PyQt5_sip
+python-socketio
