@@ -1,5 +1,6 @@
-Flask
-flask_socketio
-PyQt5
-PyQt5_sip
-python-socketio
+# python=3.12.7
+Flask==2.2.5
+Flask_SocketIO==5.4.1
+python-socketio==5.11.4
+PyQt5==5.15.11
+PyQt5_sip==12.13.0
