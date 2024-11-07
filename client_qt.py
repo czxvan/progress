@@ -18,7 +18,8 @@ class Worker(QThread):
         if not sio.connected:
             try:
                 # 连接到 WebSocket 服务器
-                sio.connect('http://127.0.0.1:5000')
+                sio.connect('http://127.0.0.1:5000',
+                            socketio_path='/ws/socket.io')
             except Exception as e:
                 print(f"连接失败: {e}")
                 return

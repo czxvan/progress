@@ -5,7 +5,7 @@ from flask_socketio import SocketIO, join_room
 import uuid
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, path='/ws/socket.io')
 
 # 存储任务进度
 progress = {}

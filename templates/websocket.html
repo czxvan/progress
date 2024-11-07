@@ -30,7 +30,11 @@
 <p id="status">Progress: 0%</p>
 
 <script>
-    const socket = io.connect('http://127.0.0.1:5000'); // 连接到服务器
+    const socket = io.connect('http://127.0.0.1:5000',
+        {
+            path: '/ws/socket.io'
+        }
+    ); // 连接到服务器
     let taskId = null; // 当前任务 ID
 
     document.getElementById('start-task').onclick = function() {
