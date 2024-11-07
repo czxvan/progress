@@ -56,7 +56,7 @@ def handle_disconnect(sid):
 
 @app.get("/", response_class=HTMLResponse)
 def index():
-    with open("templates/websocket_fastapi.html", "r") as f:
+    with open("templates/websocket.html", "r", encoding="utf-8") as f:
         return HTMLResponse(f.read())
 
 if __name__ == '__main__':
